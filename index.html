@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM Yiğit Efe Öner | Milli Satranç Sporcusu & Candidate Master</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        chess: {
+                            dark: '#0B0F19',
+                            card: '#131B2E',
+                            border: '#1E293B',
+                            amber: '#F59E0B',
+                            gold: '#D97706',
+                            emerald: '#10B981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Elo Progression -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            color: #F3F4F6;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+        .gradient-gold {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        .gradient-gold-text {
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 50%, #D97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(19, 27, 46, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+        .glow-gold {
+            box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.2);
+        }
+        /* Chessboard Styling */
+        .board-sq-white { background-color: #E2E8F0; }
+        .board-sq-black { background-color: #334155; }
+        .board-highlight { background-color: rgba(245, 158, 11, 0.5) !important; }
+        .board-target { background-color: rgba(16, 185, 129, 0.6) !important; }
+    </style>
+</head>
+<body class="antialiased selection:bg-chess-amber selection:text-black">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center text-black font-black text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-chess-knight"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs px-2 py-0.5 rounded font-black bg-amber-500/20 text-amber-400 border border-amber-500/30">CM</span>
+                            <span class="font-extrabold text-lg tracking-wider uppercase text-white font-heading">
+                                Yiğit Efe <span class="gradient-gold-text">Öner</span>
+                            </span>
+                        </div>
+                        <span class="text-[10px] text-gray-400 block tracking-widest uppercase">FIDE ID: 51683202</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-sm font-medium text-gray-300 hover:text-chess-amber transition-colors">Hakkında</a>
+                    <a href="#fide-stats" class="text-sm font-medium text-gray-300 hover:text-chess-amber transition-colors">FIDE İstatistikleri</a>
+                    <a href="#tournaments" class="text-sm font-medium text-gray-300 hover:text-chess-amber transition-colors">Turnuvalar</a>
+                    <a href="#puzzle" class="text-sm font-medium text-gray-300 hover:text-chess-amber transition-colors">Taktik Bulmaca</a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full text-sm font-semibold text-black gradient-gold hover:opacity-90 transition-all shadow-lg shadow-amber-500/20">
+                        İletişim & Sponsorluk
+                    </a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-chess-card focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-chess-card/95 backdrop-blur-xl border-b border-chess-border px-4 pt-2 pb-6 space-y-3">
+            <a href="#about" class="block py-2 text-base font-medium text-gray-300 hover:text-chess-amber">Hakkında</a>
+            <a href="#fide-stats" class="block py-2 text-base font-medium text-gray-300 hover:text-chess-amber">FIDE İstatistikleri</a>
+            <a href="#tournaments" class="block py-2 text-base font-medium text-gray-300 hover:text-chess-amber">Turnuvalar</a>
+            <a href="#puzzle" class="block py-2 text-base font-medium text-gray-300 hover:text-chess-amber">Taktik Bulmaca</a>
+            <a href="#contact" class="block w-full text-center mt-4 py-3 rounded-xl font-bold text-black gradient-gold">
+                İletişim & Sponsorluk
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
+        <!-- Background Accents & Subtle Chess Grid -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-10 right-10 opacity-5 pointer-events-none text-9xl text-white">
+            <i class="fa-solid fa-chess-king"></i>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column Text Content -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-chess-card border border-chess-border mb-6">
+                        <span class="w-2.5 h-2.5 rounded-full bg-chess-emerald animate-pulse"></span>
+                        <span class="text-xs font-bold tracking-wider uppercase text-gray-300">FIDE Unvanlı Satranç Sporcusu • 2014 Doğumlu</span>
+                    </div>
+                    
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-tight mb-4 font-heading">
+                        ADAY USTA <br/>
+                        <span class="gradient-gold-text">YİĞİT EFE ÖNER</span>
+                    </h1>
+                    
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto lg:mx-0 mb-8 font-normal leading-relaxed">
+                        Türkiye'nin yükselen satranç yeteneği. Stratejik derinlik, agresif taktik vizyon ve uluslararası arenada Grandmaster (GM) unvanı hedefiyle tahtada yazılan bir milli başarı hikayesi.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+                        <a href="https://ratings.fide.com/profile/51683202" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl text-center font-bold text-black gradient-gold hover:shadow-lg hover:shadow-amber-500/25 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> FIDE Profilini İncele
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl text-center font-semibold text-white bg-chess-card hover:bg-chess-border border border-chess-border transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-envelope"></i> İletişim & Sponsorluk
+                        </a>
+                    </div>
+
+                    <!-- FIDE Live Rating Dashboard Snippet -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-chess-border pt-8">
+                        <div class="p-3 rounded-xl bg-chess-card/80 border border-chess-border">
+                            <span class="text-xs text-gray-400 font-semibold block mb-1">Standart Elo</span>
+                            <div class="text-2xl font-black text-white font-heading">2161</div>
+                            <span class="text-[10px] text-chess-emerald font-bold"><i class="fa-solid fa-bolt"></i> Peak: 2239</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-chess-card/80 border border-chess-border">
+                            <span class="text-xs text-gray-400 font-semibold block mb-1">Hızlı (Rapid)</span>
+                            <div class="text-2xl font-black text-white font-heading">2164</div>
+                            <span class="text-[10px] text-amber-400 font-bold"><i class="fa-solid fa-stopwatch"></i> FIDE Aktif</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-chess-card/80 border border-chess-border">
+                            <span class="text-xs text-gray-400 font-semibold block mb-1">Yıldırım (Blitz)</span>
+                            <div class="text-2xl font-black text-white font-heading">1963</div>
+                            <span class="text-[10px] text-gray-400 font-bold"><i class="fa-solid fa-bolt-lightning"></i> Active</span>
+                        </div>
+                        <div class="p-3 rounded-xl bg-chess-card/80 border border-chess-border">
+                            <span class="text-xs text-gray-400 font-semibold block mb-1">Türkiye Sırası</span>
+                            <div class="text-2xl font-black gradient-gold-text font-heading">#176</div>
+                            <span class="text-[10px] text-gray-400 font-bold">Aktif Oyuncular</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column Athlete Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="absolute -inset-1 rounded-3xl gradient-gold opacity-20 blur-xl"></div>
+                        
+                        <div class="relative rounded-3xl bg-chess-card border border-chess-border overflow-hidden glow-gold">
+                            <div class="relative h-[480px] bg-slate-900 overflow-hidden group">
+                                <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80" 
+                                     alt="Yiğit Efe Öner Satranç" 
+                                     class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
+                                     onerror="this.src='https://placehold.co/600x800/131B2E/FFFFFF?text=CM+Yigit+Efe+Oner'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-chess-dark via-chess-dark/20 to-transparent"></div>
+                                
+                                <div class="absolute top-4 right-4 bg-chess-dark/80 backdrop-blur-md border border-amber-500/40 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                    <span class="text-xl">🇹🇷</span>
+                                    <span class="text-xs font-extrabold text-amber-400">Türkiye Milli Takımı</span>
+                                </div>
+
+                                <div class="absolute bottom-6 left-6 right-6 p-5 rounded-2xl glass-card">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="px-2 py-0.5 rounded bg-amber-500 text-black font-black text-xs">CM</span>
+                                                <h3 class="text-xl font-black text-white font-heading">Yiğit Efe Öner</h3>
+                                            </div>
+                                            <p class="text-xs text-gray-300">Candidate Master (Unvan Veriliş: 2026)</p>
+                                        </div>
+                                        <div class="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center text-black text-2xl shadow-md">
+                                            <i class="fa-solid fa-chess-queen"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FIDE Stats & Elo Graph Dashboard Section -->
+    <section id="fide-stats" class="py-20 relative bg-slate-950/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4 border border-amber-500/20">
+                    <i class="fa-solid fa-chart-line"></i> Resmî FIDE Verileri
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-heading">FIDE Kariyer & İstatistik Paneli</h2>
+                <p class="text-gray-400 mt-3">Dünya Satranç Federasyonu (FIDE ID: 51683202) verilerine göre güncel puanlar ve dereceler.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Standard -->
+                <div class="glass-card p-6 rounded-2xl relative overflow-hidden border-t-2 border-t-amber-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Standart Elo</span>
+                        <i class="fa-solid fa-chess-rook text-amber-400 text-xl"></i>
+                    </div>
+                    <div class="text-4xl font-black text-white font-heading mb-1">2161</div>
+                    <p class="text-xs text-chess-emerald font-semibold"><i class="fa-solid fa-arrow-trend-up"></i> Zirve Derece: 2239 (Eylül 2026)</p>
+                </div>
+
+                <!-- Rapid -->
+                <div class="glass-card p-6 rounded-2xl relative overflow-hidden border-t-2 border-t-blue-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Hızlı (Rapid) Elo</span>
+                        <i class="fa-solid fa-stopwatch text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="text-4xl font-black text-white font-heading mb-1">2164</div>
+                    <p class="text-xs text-gray-400 font-medium">Uluslararası Hızlı Satranç</p>
+                </div>
+
+                <!-- Blitz -->
+                <div class="glass-card p-6 rounded-2xl relative overflow-hidden border-t-2 border-t-purple-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Yıldırım (Blitz) Elo</span>
+                        <i class="fa-solid fa-bolt-lightning text-purple-400 text-xl"></i>
+                    </div>
+                    <div class="text-4xl font-black text-white font-heading mb-1">1963</div>
+                    <p class="text-xs text-gray-400 font-medium">FIDE Yıldırım Puanı</p>
+                </div>
+
+                <!-- Rankings -->
+                <div class="glass-card p-6 rounded-2xl relative overflow-hidden border-t-2 border-t-chess-emerald">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Sıralamalar (Aktif)</span>
+                        <i class="fa-solid fa-globe text-chess-emerald text-xl"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs"><span class="text-gray-400">Türkiye:</span><strong class="text-white">#176</strong></div>
+                        <div class="flex justify-between text-xs"><span class="text-gray-400">Avrupa:</span><strong class="text-white">#7514</strong></div>
+                        <div class="flex justify-between text-xs"><span class="text-gray-400">Dünya:</span><strong class="text-white">#10579</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elo Chart Visualizer -->
+            <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-extrabold text-white font-heading">Elo İlerleme Grafiği (2024 - 2026)</h3>
+                        <p class="text-xs text-gray-400 mt-0.5">2 Yıl İçerisinde 1207 Elo'dan 2239 Peak Elo'ya Hızlı Yükseliş</p>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-chess-card border border-chess-border text-xs text-amber-400 font-bold">
+                        <i class="fa-solid fa-trophy"></i> Candidate Master (CM) Unvanı
+                    </div>
+                </div>
+                <div class="h-72 w-full">
+                    <canvas id="eloChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Biography Section -->
+    <section id="about" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-3xl overflow-hidden border border-chess-border p-8 bg-chess-card">
+                        <div class="text-6xl text-amber-500/20 mb-4"><i class="fa-solid fa-chess-pawn"></i></div>
+                        <h3 class="text-2xl font-black text-white mb-4 font-heading">Sporcu Profili</h3>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex justify-between border-b border-chess-border/60 pb-2">
+                                <span class="text-gray-400">Doğum Yılı:</span>
+                                <span class="font-bold text-white">2014 (12 Yaşında)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-chess-border/60 pb-2">
+                                <span class="text-gray-400">Milli Federasyon:</span>
+                                <span class="font-bold text-white">Türkiye 🇹🇷</span>
+                            </li>
+                            <li class="flex justify-between border-b border-chess-border/60 pb-2">
+                                <span class="text-gray-400">Resmi Unvan:</span>
+                                <span class="font-bold text-amber-400">Candidate Master (CM)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-chess-border/60 pb-2">
+                                <span class="text-gray-400">FIDE Kod No:</span>
+                                <span class="font-bold text-white">51683202</span>
+                            </li>
+                            <li class="flex justify-between pb-1">
+                                <span class="text-gray-400">Oyun Tarzı:</span>
+                                <span class="font-bold text-chess-emerald">Taktik & Agresif Hücum</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4 border border-amber-500/20">
+                        <i class="fa-solid fa-user-ninja"></i> Biyografi & Oyun Tarzı
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mb-6 font-heading">
+                        Zeka, Disiplin ve <br/><span class="gradient-gold-text">Tahtada Mutlak Hakimiyet</span>
+                    </h2>
+                    
+                    <div class="space-y-4 text-gray-300 text-base leading-relaxed">
+                        <p>
+                            2014 doğumlu Türk milli satranç yeteneği <strong class="text-white">Yiğit Efe Öner</strong>, çok genç yaşta gösterdiği olağanüstü hesaplama hızı ve stratejik olgunluk ile Türkiye satranç camiasının en çok dikkat çeken isimlerinden biri haline gelmiştir.
+                        </p>
+                        <p>
+                            2024-2026 yılları arasında sergilediği inanılmaz yükseliş performansıyla FIDE kuvvet derecesini 1200 seviyelerinden 2239 peak Elo'ya taşıyarak resmi <strong class="text-amber-400">Candidate Master (CM)</strong> unvanına layık görülmüştür.
+                        </p>
+                        <p>
+                            Oyunlarında keskin taktik kombinasyonlar, dinamik piyon feda hamleleri ve derin açılış hazırlıklarıyla rakip savunmaları zorlayan Yiğit Efe, temel hedefini uluslararası arenada <strong class="text-white">Grandmaster (GM)</strong> unvanına ulaşmak ve Türkiye'yi Satranç Olimpiyatları'nda başarıyla temsil etmek olarak belirlemiştir.
+                        </p>
+                    </div>
+
+                    <!-- Key Pillars -->
+                    <div class="grid grid-cols-3 gap-4 mt-8">
+                        <div class="p-4 rounded-xl bg-chess-card border border-chess-border text-center">
+                            <i class="fa-solid fa-brain text-amber-400 text-2xl mb-2"></i>
+                            <h4 class="font-bold text-white text-xs">Derin Hesaplama</h4>
+                        </div>
+                        <div class="p-4 rounded-xl bg-chess-card border border-chess-border text-center">
+                            <i class="fa-solid fa-shield-halved text-chess-emerald text-2xl mb-2"></i>
+                            <h4 class="font-bold text-white text-xs">Açılış Teorisi</h4>
+                        </div>
+                        <div class="p-4 rounded-xl bg-chess-card border border-chess-border text-center">
+                            <i class="fa-solid fa-flag-checkered text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-bold text-white text-xs">Oyun Sonu Tekniği</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tournaments & Milestones -->
+    <section id="tournaments" class="py-20 bg-slate-950/60 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4 border border-amber-500/20">
+                    <i class="fa-solid fa-trophy"></i> Turnuva Geçmişi
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-heading">Öne Çıkan Başarılar & Dönüm Noktaları</h2>
+                <p class="text-gray-400 mt-3">Uluslararası kuvvet derecesi kazanımı ve turnuva dereceleri.</p>
+            </div>
+
+            <!-- Timeline Grid -->
+            <div class="space-y-6 max-w-4xl mx-auto">
+                
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-amber-500 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-black flex-shrink-0">
+                            2026
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 uppercase">FIDE Unvanı</span>
+                            <h3 class="text-lg font-bold text-white mt-1">FIDE Candidate Master (CM) Unvanı</h3>
+                            <p class="text-sm text-gray-400">2200+ Elo barajının aşılması ve uluslararası resmi CM unvanının FIDE tarafından onaylanması.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-chess-emerald flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-chess-emerald/20 text-chess-emerald flex items-center justify-center text-xl font-black flex-shrink-0">
+                            2026
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-chess-emerald/20 text-chess-emerald uppercase">Peak Elo</span>
+                            <h3 class="text-lg font-bold text-white mt-1">2239 Standart Elo Rejimi</h3>
+                            <p class="text-sm text-gray-400">Eylül 2026 FIDE reyting listesinde kariyerin en yüksek derecesine ulaşılması.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-500 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-black flex-shrink-0">
+                            2025
+                        </div>
+                        <div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 uppercase">Ulusal Şampiyona</span>
+                            <h3 class="text-lg font-bold text-white mt-1">Türkiye Yaş Grupları & Gençler Şampiyonası</h3>
+                            <p class="text-sm text-gray-400">Kendi yaş kategorisinde zirve dereceler ve milli takım havuzuna seçilme başarısı.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Tactical Puzzle Module -->
+    <section id="puzzle" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4 border border-amber-500/20">
+                    <i class="fa-solid fa-puzzle-piece"></i> İnteraktif Modül
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-heading">Günün Taktik Bulmacası</h2>
+                <p class="text-gray-400 mt-2">CM Yiğit Efe Öner'in stilini yansıtan mat kombinasyonunu tahta üzerinde çözün!</p>
+            </div>
+
+            <div class="glass-card max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl">
+                <!-- Status Header -->
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-chess-border">
+                    <div>
+                        <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Hamle Sırası: BEYAZDA</span>
+                        <h4 class="text-lg font-bold text-white font-heading">Vezir Fedası ve 2 Hamlede Mat</h4>
+                    </div>
+                    <button onclick="resetPuzzle()" class="px-3 py-1.5 rounded-lg bg-chess-card hover:bg-chess-border text-xs text-gray-300 border border-chess-border flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-rotate-left"></i> Sıfırla
+                    </button>
+                </div>
+
+                <!-- Mini Interactive Chess Board Grid -->
+                <div class="max-w-[360px] mx-auto aspect-square grid grid-cols-8 grid-rows-8 border-2 border-slate-700 rounded-lg overflow-hidden shadow-2xl mb-6" id="chessboard">
+                    <!-- Board cells will be rendered by JavaScript -->
+                </div>
+
+                <!-- Feedback area -->
+                <div id="puzzle-feedback" class="text-center p-3 rounded-xl bg-chess-card border border-chess-border text-xs text-gray-300 font-semibold">
+                    💡 İpucu: Beyaz Vezir (Q) ile f7 veya h7 karesine feda hamlesini inceleyin!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Sponsorship Form -->
+    <section id="contact" class="py-20 bg-slate-950/80 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider mb-4 border border-amber-500/20">
+                        <i class="fa-solid fa-envelope-open-text"></i> İletişim
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mb-6 font-heading">
+                        Sponsorluk & Turnuva Davetleri
+                    </h2>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Milli sporcumuz Yiğit Efe Öner'in uluslararası turnuva yolculuğuna destek olmak, marka sponsorluğu sağlamak veya davetler için resmi iletişim kanalı.
+                    </p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="p-4 rounded-xl bg-chess-card border border-chess-border flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center text-black font-bold">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-gray-400 uppercase font-bold block">E-Posta</span>
+                                <a href="mailto:yigitefe.oner@fide.com" class="text-sm font-semibold text-white hover:text-amber-400 transition-colors">yigitefe.oner@fide.com</a>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-chess-card border border-chess-border flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center text-black font-bold">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-gray-400 uppercase font-bold block">FIDE Profili</span>
+                                <a href="https://ratings.fide.com/profile/51683202" target="_blank" class="text-sm font-semibold text-amber-400 hover:underline">FIDE ID: 51683202</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="glass-card p-8 rounded-3xl">
+                        <h3 class="text-xl font-bold text-white mb-6 font-heading">Mesaj Gönder</h3>
+                        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Ad Soyad</label>
+                                    <input type="text" required placeholder="Adınız" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">E-Posta</label>
+                                    <input type="email" required placeholder="ornek@email.com" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Konu</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
+                                    <option>Sponsorluk & Marka İş Birliği</option>
+                                    <option>Turnuva Daveti</option>
+                                    <option>Basın & Medya Röportajı</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Mesaj</label>
+                                <textarea rows="4" required placeholder="Mesajınız..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-black gradient-gold hover:opacity-95 transition-all shadow-lg shadow-amber-500/20">
+                                Mesajı İlet
+                            </button>
+                        </form>
+
+                        <div id="form-alert" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-base"></i>
+                            <span>Mesajınız iletildi. Teşekkür ederiz!</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-chess-border bg-slate-950 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <p>&copy; 2026 CM Yiğit Efe Öner. Tüm Hakları Saklıdır.</p>
+            <p>FIDE ID: 51683202 • Türkiye Satranç Federasyonu Sporcusu</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Chart.js Elo Growth Visualization
+        window.onload = function() {
+            const ctx = document.getElementById('eloChart').getContext('2d');
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(245, 158, 11, 0.4)');
+            gradient.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Oca 2024', 'Haz 2024', 'Oca 2025', 'Haz 2025', 'Oca 2026', 'Eyl 2026 (Peak)'],
+                    datasets: [{
+                        label: 'FIDE Standart Elo',
+                        data: [1207, 1480, 1820, 2010, 2161, 2239],
+                        borderColor: '#F59E0B',
+                        borderWidth: 3,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.35,
+                        pointBackgroundColor: '#F59E0B',
+                        pointBorderColor: '#FFFFFF',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#131B2E',
+                            titleColor: '#F59E0B',
+                            bodyColor: '#FFFFFF',
+                            borderColor: '#1E293B',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94A3B8', font: { size: 11 } }
+                        },
+                        y: {
+                            min: 1100,
+                            max: 2300,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94A3B8', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Initialize Mini Interactive Chessboard Puzzle
+            initChessPuzzle();
+        };
+
+        /* Interactive Chess Puzzle Logic */
+        let puzzleStep = 0;
+        const initialBoard = [
+            ['r', '', 'b', 'q', 'k', 'b', '', 'r'],
+            ['p', 'p', 'p', '', 'p', 'p', 'p', 'p'],
+            ['', '', 'n', '', '', 'n', '', ''],
+            ['', '', '', 'p', '', '', '', ''],
+            ['', '', 'B', 'P', 'P', '', '', ''],
+            ['', '', '', '', '', 'N', '', ''],
+            ['P', 'P', 'P', '', 'Q', 'P', 'P', 'P'],
+            ['R', 'N', 'B', '', 'K', '', '', 'R']
+        ];
+
+        function initChessPuzzle() {
+            const boardContainer = document.getElementById('chessboard');
+            boardContainer.innerHTML = '';
+            
+            // Render simplified puzzle position: White Queen on e2, Bishop on c4, Black King on e8, Pawn f7
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const cell = document.createElement('div');
+                    const isWhite = (r + c) % 2 === 0;
+                    cell.className = `w-full h-full flex items-center justify-center text-2xl font-bold cursor-pointer select-none ${isWhite ? 'board-sq-white' : 'board-sq-black'}`;
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    
+                    // Render specific tactical puzzle pieces
+                    if (r === 0 && c === 4) cell.innerHTML = '♚'; // Black King
+                    if (r === 1 && c === 5) cell.innerHTML = '♟'; // Black Pawn f7
+                    if (r === 4 && c === 2) cell.innerHTML = '♗'; // White Bishop c4
+                    if (r === 6 && c === 4 && puzzleStep === 0) cell.innerHTML = '♕'; // White Queen e2
+                    if (r === 1 && c === 5 && puzzleStep === 1) cell.innerHTML = '♕'; // White Queen took f7
+                    if (r === 0 && c === 5 && puzzleStep === 2) cell.innerHTML = '♚'; // Black King forced to f8
+                    if (r === 0 && c === 5 && puzzleStep === 3) cell.innerHTML = '♗'; // Mate with Bishop/Queen!
+
+                    cell.addEventListener('click', () => handleSquareClick(r, c));
+                    boardContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function handleSquareClick(r, c) {
+            const feedback = document.getElementById('puzzle-feedback');
+            
+            if (puzzleStep === 0) {
+                // First Move: Player should click on f7 (row 1, col 5) with Queen
+                if (r === 1 && c === 5) {
+                    puzzleStep = 1;
+                    feedback.className = "text-center p-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold";
+                    feedback.innerHTML = "🔥 Şahane Vezir Fedası! (Qxf7+). Siyah Şah f8 karesine kaçmak zorunda.";
+                    initChessPuzzle();
+                    
+                    // Auto forced reply by Black King
+                    setTimeout(() => {
+                        puzzleStep = 2;
+                        initChessPuzzle();
+                        feedback.innerHTML = "👉 Şimdi bitirici mat hamlesini yapın! (Bxf7# veya Qf7#)";
+                    }, 1000);
+                } else {
+                    feedback.className = "text-center p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold";
+                    feedback.innerHTML = "❌ Yanlış hamle! Daha agresif feda hamlesini arayın.";
+                }
+            } else if (puzzleStep === 2) {
+                // Final Checkmate Move
+                puzzleStep = 3;
+                feedback.className = "text-center p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold";
+                feedback.innerHTML = "🎉 TEBRİKLER! Mat! CM Yiğit Efe Öner seviyesinde harika bir taktik çözüm!";
+                initChessPuzzle();
+            }
+        }
+
+        function resetPuzzle() {
+            puzzleStep = 0;
+            const feedback = document.getElementById('puzzle-feedback');
+            feedback.className = "text-center p-3 rounded-xl bg-chess-card border border-chess-border text-xs text-gray-300 font-semibold";
+            feedback.innerHTML = "💡 İpucu: Beyaz Vezir (Q) ile f7 karesine feda hamlesini yapın!";
+            initChessPuzzle();
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('form-alert');
+            alertBox.classList.remove('hidden');
+            document.getElementById('contact-form').reset();
+            setTimeout(() => alertBox.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>
