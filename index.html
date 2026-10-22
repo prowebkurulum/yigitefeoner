@@ -65,11 +65,22 @@
         .glow-gold {
             box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.2);
         }
-        /* Chessboard Styling */
-        .board-sq-white { background-color: #E2E8F0; }
-        .board-sq-black { background-color: #334155; }
+        
+        /* CHESSBOARD STYLES */
+        .board-sq-white { background-color: #2A3655; }
+        .board-sq-black { background-color: #131B2E; }
         .board-highlight { background-color: rgba(245, 158, 11, 0.5) !important; }
         .board-target { background-color: rgba(16, 185, 129, 0.6) !important; }
+
+        /* SATRANÇ TAŞLARI İÇİN ÖZEL RENKLER */
+        .piece-white {
+            color: #F8FAFC;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.6));
+        }
+        .piece-black {
+            color: #EF4444; /* Siyah taşlar için görünür kırmızı/bordo tonu */
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-chess-amber selection:text-black">
@@ -128,7 +139,6 @@
 
     <!-- Hero Section -->
     <section class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
-        <!-- Background Accents & Subtle Chess Grid -->
         <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
         <div class="absolute top-10 right-10 opacity-5 pointer-events-none text-9xl text-white">
             <i class="fa-solid fa-chess-king"></i>
@@ -248,7 +258,7 @@
                         <i class="fa-solid fa-chess-rook text-amber-400 text-xl"></i>
                     </div>
                     <div class="text-4xl font-black text-white font-heading mb-1">2161</div>
-                    <p class="text-xs text-chess-emerald font-semibold"><i class="fa-solid fa-arrow-trend-up"></i> Zirve Derece: 2239 (Eylül 2026)</p>
+                    <p class="text-xs text-chess-emerald font-semibold"><i class="fa-solid fa-arrow-trend-up"></i> Zirve Derece: 2239 (Eyl 2026)</p>
                 </div>
 
                 <!-- Rapid -->
@@ -489,63 +499,51 @@
 
                     <div class="space-y-4 mb-8">
                         <div class="p-4 rounded-xl bg-chess-card border border-chess-border flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center text-black font-bold">
+                            <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
                                 <i class="fa-solid fa-envelope"></i>
                             </div>
                             <div>
-                                <span class="text-[10px] text-gray-400 uppercase font-bold block">E-Posta</span>
-                                <a href="mailto:yigitefe.oner@fide.com" class="text-sm font-semibold text-white hover:text-amber-400 transition-colors">yigitefe.oner@fide.com</a>
+                                <span class="text-xs text-gray-400 block">E-Posta</span>
+                                <a href="mailto:yigitefe.onerr@gmail.com" class="text-sm font-bold text-white hover:text-amber-400">yigitefe.onerr@gmail.com</a>
                             </div>
                         </div>
-
                         <div class="p-4 rounded-xl bg-chess-card border border-chess-border flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center text-black font-bold">
-                                <i class="fa-solid fa-trophy"></i>
+                            <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
                             </div>
                             <div>
-                                <span class="text-[10px] text-gray-400 uppercase font-bold block">FIDE Profili</span>
-                                <a href="https://ratings.fide.com/profile/51683202" target="_blank" class="text-sm font-semibold text-amber-400 hover:underline">FIDE ID: 51683202</a>
+                                <span class="text-xs text-gray-400 block">Konum</span>
+                                <span class="text-sm font-bold text-white">Türkiye / Ankara</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Contact Form -->
                 <div class="lg:col-span-7">
-                    <div class="glass-card p-8 rounded-3xl">
-                        <h3 class="text-xl font-bold text-white mb-6 font-heading">Mesaj Gönder</h3>
-                        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Ad Soyad</label>
-                                    <input type="text" required placeholder="Adınız" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">E-Posta</label>
-                                    <input type="email" required placeholder="ornek@email.com" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
-                                </div>
+                    <form class="glass-card p-8 rounded-3xl space-y-4" onsubmit="event.preventDefault(); alert('Mesajınız Gönderildi!');">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-400 mb-1">Adınız Soyadınız</label>
+                                <input type="text" placeholder="Ad Soyad" class="w-full px-4 py-3 rounded-xl bg-chess-dark border border-chess-border text-white text-sm focus:outline-none focus:border-amber-500 transition-colors" required>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Konu</label>
-                                <select class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors">
-                                    <option>Sponsorluk & Marka İş Birliği</option>
-                                    <option>Turnuva Daveti</option>
-                                    <option>Basın & Medya Röportajı</option>
-                                </select>
+                                <label class="block text-xs font-semibold text-gray-400 mb-1">E-Posta Adresiniz</label>
+                                <input type="email" placeholder="ornek@email.com" class="w-full px-4 py-3 rounded-xl bg-chess-dark border border-chess-border text-white text-sm focus:outline-none focus:border-amber-500 transition-colors" required>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Mesaj</label>
-                                <textarea rows="4" required placeholder="Mesajınız..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-chess-border text-white text-sm focus:outline-none focus:border-amber-400 transition-colors"></textarea>
-                            </div>
-                            <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-black gradient-gold hover:opacity-95 transition-all shadow-lg shadow-amber-500/20">
-                                Mesajı İlet
-                            </button>
-                        </form>
-
-                        <div id="form-alert" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2">
-                            <i class="fa-solid fa-circle-check text-base"></i>
-                            <span>Mesajınız iletildi. Teşekkür ederiz!</span>
                         </div>
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">Konu</label>
+                            <input type="text" placeholder="Sponsorluk / Davet / İletişim" class="w-full px-4 py-3 rounded-xl bg-chess-dark border border-chess-border text-white text-sm focus:outline-none focus:border-amber-500 transition-colors" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">Mesajınız</label>
+                            <textarea rows="4" placeholder="Mesajınızı detaylandırın..." class="w-full px-4 py-3 rounded-xl bg-chess-dark border border-chess-border text-white text-sm focus:outline-none focus:border-amber-500 transition-colors" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl font-bold text-black gradient-gold hover:opacity-90 transition-all shadow-lg shadow-amber-500/20">
+                            Mesaj Gönder
+                        </button>
+                    </form>
                 </div>
 
             </div>
@@ -553,163 +551,65 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-chess-border bg-slate-950 text-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <p>&copy; 2026 CM Yiğit Efe Öner. Tüm Hakları Saklıdır.</p>
-            <p>FIDE ID: 51683202 • Türkiye Satranç Federasyonu Sporcusu</p>
-        </div>
+    <footer class="py-8 border-t border-chess-border text-center text-xs text-gray-500">
+        <p>© 2026 CM Yiğit Efe Öner. Tüm Hakları Saklıdır.</p>
     </footer>
 
-    <!-- Interactive Logic Scripts -->
+    <!-- Scripts for Chart & Chessboard Logic -->
     <script>
-        // Mobile Navigation Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
 
-        // Chart.js Elo Growth Visualization
-        window.onload = function() {
-            const ctx = document.getElementById('eloChart').getContext('2d');
-            
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(245, 158, 11, 0.4)');
-            gradient.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Oca 2024', 'Haz 2024', 'Oca 2025', 'Haz 2025', 'Oca 2026', 'Eyl 2026 (Peak)'],
-                    datasets: [{
-                        label: 'FIDE Standart Elo',
-                        data: [1207, 1480, 1820, 2010, 2161, 2239],
-                        borderColor: '#F59E0B',
-                        borderWidth: 3,
-                        backgroundColor: gradient,
-                        fill: true,
-                        tension: 0.35,
-                        pointBackgroundColor: '#F59E0B',
-                        pointBorderColor: '#FFFFFF',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#131B2E',
-                            titleColor: '#F59E0B',
-                            bodyColor: '#FFFFFF',
-                            borderColor: '#1E293B',
-                            borderWidth: 1
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94A3B8', font: { size: 11 } }
-                        },
-                        y: {
-                            min: 1100,
-                            max: 2300,
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            ticks: { color: '#94A3B8', font: { size: 11 } }
-                        }
-                    }
-                }
-            });
-
-            // Initialize Mini Interactive Chessboard Puzzle
-            initChessPuzzle();
-        };
-
-        /* Interactive Chess Puzzle Logic */
-        let puzzleStep = 0;
-        const initialBoard = [
-            ['r', '', 'b', 'q', 'k', 'b', '', 'r'],
-            ['p', 'p', 'p', '', 'p', 'p', 'p', 'p'],
-            ['', '', 'n', '', '', 'n', '', ''],
-            ['', '', '', 'p', '', '', '', ''],
-            ['', '', 'B', 'P', 'P', '', '', ''],
-            ['', '', '', '', '', 'N', '', ''],
-            ['P', 'P', 'P', '', 'Q', 'P', 'P', 'P'],
-            ['R', 'N', 'B', '', 'K', '', '', 'R']
-        ];
-
-        function initChessPuzzle() {
-            const boardContainer = document.getElementById('chessboard');
-            boardContainer.innerHTML = '';
-            
-            // Render simplified puzzle position: White Queen on e2, Bishop on c4, Black King on e8, Pawn f7
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    const cell = document.createElement('div');
-                    const isWhite = (r + c) % 2 === 0;
-                    cell.className = `w-full h-full flex items-center justify-center text-2xl font-bold cursor-pointer select-none ${isWhite ? 'board-sq-white' : 'board-sq-black'}`;
-                    cell.dataset.row = r;
-                    cell.dataset.col = c;
-                    
-                    // Render specific tactical puzzle pieces
-                    if (r === 0 && c === 4) cell.innerHTML = '♚'; // Black King
-                    if (r === 1 && c === 5) cell.innerHTML = '♟'; // Black Pawn f7
-                    if (r === 4 && c === 2) cell.innerHTML = '♗'; // White Bishop c4
-                    if (r === 6 && c === 4 && puzzleStep === 0) cell.innerHTML = '♕'; // White Queen e2
-                    if (r === 1 && c === 5 && puzzleStep === 1) cell.innerHTML = '♕'; // White Queen took f7
-                    if (r === 0 && c === 5 && puzzleStep === 2) cell.innerHTML = '♚'; // Black King forced to f8
-                    if (r === 0 && c === 5 && puzzleStep === 3) cell.innerHTML = '♗'; // Mate with Bishop/Queen!
-
-                    cell.addEventListener('click', () => handleSquareClick(r, c));
-                    boardContainer.appendChild(cell);
+        // Elo Progression Chart initialization
+        const ctx = document.getElementById('eloChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Oca 2024', 'Haz 2024', 'Oca 2025', 'Haz 2025', 'Oca 2026', 'Eyl 2026'],
+                datasets: [{
+                    label: 'FIDE Standart Elo',
+                    data: [1207, 1450, 1780, 1990, 2161, 2239],
+                    borderColor: '#F59E0B',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#F59E0B',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9CA3AF' } },
+                    y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9CA3AF' } }
                 }
             }
-        }
+        });
 
-        function handleSquareClick(r, c) {
-            const feedback = document.getElementById('puzzle-feedback');
-            
-            if (puzzleStep === 0) {
-                // First Move: Player should click on f7 (row 1, col 5) with Queen
-                if (r === 1 && c === 5) {
-                    puzzleStep = 1;
-                    feedback.className = "text-center p-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold";
-                    feedback.innerHTML = "🔥 Şahane Vezir Fedası! (Qxf7+). Siyah Şah f8 karesine kaçmak zorunda.";
-                    initChessPuzzle();
-                    
-                    // Auto forced reply by Black King
-                    setTimeout(() => {
-                        puzzleStep = 2;
-                        initChessPuzzle();
-                        feedback.innerHTML = "👉 Şimdi bitirici mat hamlesini yapın! (Bxf7# veya Qf7#)";
-                    }, 1000);
-                } else {
-                    feedback.className = "text-center p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold";
-                    feedback.innerHTML = "❌ Yanlış hamle! Daha agresif feda hamlesini arayın.";
-                }
-            } else if (puzzleStep === 2) {
-                // Final Checkmate Move
-                puzzleStep = 3;
-                feedback.className = "text-center p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold";
-                feedback.innerHTML = "🎉 TEBRİKLER! Mat! CM Yiğit Efe Öner seviyesinde harika bir taktik çözüm!";
-                initChessPuzzle();
+        // Chessboard Grid Generator
+        const board = document.getElementById('chessboard');
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const sq = document.createElement('div');
+                const isWhite = (row + col) % 2 === 0;
+                sq.className = `flex items-center justify-center font-bold text-2xl cursor-pointer ${isWhite ? 'board-sq-white' : 'board-sq-black'}`;
+                
+                // Taşlar renk sınıfları ile yerleştiriliyor
+                if(row === 2 && col === 6) sq.innerHTML = '<span class="piece-black">♚</span>'; // Siyah Şah (Kırmızı/Bordo)
+                if(row === 6 && col === 4) sq.innerHTML = '<span class="piece-white">♔</span>'; // Beyaz Şah
+                if(row === 6 && col === 5) sq.innerHTML = '<span class="piece-white">♕</span>'; // Beyaz Vezir
+
+                board.appendChild(sq);
             }
         }
 
         function resetPuzzle() {
-            puzzleStep = 0;
-            const feedback = document.getElementById('puzzle-feedback');
-            feedback.className = "text-center p-3 rounded-xl bg-chess-card border border-chess-border text-xs text-gray-300 font-semibold";
-            feedback.innerHTML = "💡 İpucu: Beyaz Vezir (Q) ile f7 karesine feda hamlesini yapın!";
-            initChessPuzzle();
-        }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const alertBox = document.getElementById('form-alert');
-            alertBox.classList.remove('hidden');
-            document.getElementById('contact-form').reset();
-            setTimeout(() => alertBox.classList.add('hidden'), 5000);
+            document.getElementById('puzzle-feedback').innerHTML = "💡 İpucu: Beyaz Vezir (Q) ile f7 veya h7 karesine feda hamlesini inceleyin!";
         }
     </script>
 </body>
